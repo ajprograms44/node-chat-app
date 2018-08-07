@@ -27,18 +27,27 @@ app.use(express.static(publicPath));
 io.on('connection', (socket) => {
     console.log('User Connected');
 
-    socket.emit('newMessage', {
-        from:'josh69',
-        text:'Howdy',
-        createdAt: 444
-    })
+    // socket.emit('newMessage', {
+    //     from:'josh69',
+    //     text:'Howdy',
+    //     createdAt: 444
+    // })
     //FROM SERVER TO CLIENT:
     //.emit creates an event, as the second argument we can put in data to be sent back
     //The event along with the data gets sent back to the server
+    //socket.emit() emits to a single connection
 
     socket.on('createMessage', (message) => {
         console.log('createMessage', message);
+        io.emit('newMessage', {
+            from: message.from,
+            text: message.text,
+            createdAt: new Date().getTime
+
+            //io.emit emits to every single connection
+        });
     })
+    
 });
 //io.on let's you register an event listener
 

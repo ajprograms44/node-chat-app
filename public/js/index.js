@@ -6,10 +6,10 @@ var socket = io();
 socket.on('connect',function () {
     console.log('Connected to server')
 
-    socket.emit('createMessage', {
-        from: "jen334",
-        text: "hey this is jen!"
-    });
+    // socket.emit('createMessage', {
+    //     from: "jen334",
+    //     text: "hey this is jen!"
+    // });
     //FROM CLIENT TO SERVER
     //Created a client side script that connects to the server and emits a create email event
 });

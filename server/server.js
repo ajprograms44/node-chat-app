@@ -27,9 +27,18 @@ app.use(express.static(publicPath));
 io.on('connection', (socket) => {
     console.log('User Connected');
 
-    socket.on('disconnect', () => {
-        console.log('User Disconnected')
-    });
+    socket.emit('newMessage', {
+        from:'josh69',
+        text:'Howdy',
+        createdAt: 444
+    })
+    //FROM SERVER TO CLIENT:
+    //.emit creates an event, as the second argument we can put in data to be sent back
+    //The event along with the data gets sent back to the server
+
+    socket.on('createMessage', (message) => {
+        console.log('createMessage', message);
+    })
 });
 //io.on let's you register an event listener
 

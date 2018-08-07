@@ -4,6 +4,7 @@ const http = require('http');
 const express = require('express');
 const socketIO = require('socket.io');
 
+const {generateMessage} = require('./utils/message');
 const publicPath = path.join(__dirname, '../public');
 //path helps with file and directory paths
 //path.join() takes your partial paths and joins them together
@@ -27,35 +28,17 @@ app.use(express.static(publicPath));
 io.on('connection', (socket) => {
     console.log('User Connected');
 
-    socket.emit('newMessage',{
-        from: 'Admin',
-        text: 'Welcome to the chat app!',
-        createdAt: new Date().getTime
-    });
+    socket.emit('newMessage', generateMessage('Admin', 'Welcome to the chat app'));
+    //FROM SERVER TO CLIENT
 
-    socket.broadcast.emit('newMessage', {
-        from: 'Admin',
-        text: 'New user joined',
-        createdAt: new Date().getTime
-    })
-    // socket.emit('newMessage', {
-    //     from:'josh69',
-    //     text:'Howdy',
-    //     createdAt: 444
-    // })
-    //FROM SERVER TO CLIENT:
-    //.emit creates an event, as the second argument we can put in data to be sent back
-    //The event along with the data gets sent back to the server
-    //socket.emit() emits to a single connection
+    socket.broadcast.emit('newMessage', generateMessage('Admin', 'New User joined'));
+    //Here we are using the function we created in message.js and tested in message.test.js
+    // to create a message
+
 
     socket.on('createMessage', (message) => {
         console.log('createMessage', message);
-        io.emit('newMessage', {
-            from: message.from,
-            text: message.text,
-            createdAt: new Date().getTime
-        //io.emit emits to every single connection
-        });
+        io.emit('newMessage', generateMessage(message.from, message.text));
 
         // socket.broadcast.emit('newMessage', {
         //     from: message.from,

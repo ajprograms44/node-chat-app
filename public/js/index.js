@@ -16,7 +16,25 @@ socket.on('connect',function () {
 
 socket.on('newMessage', function (message) {
 //The data that accomapnies the event is what needs to be first provided in the callback function
-    console.log('New message:', message.text);
-    console.log('From:', message.from);
+    console.log(message);
+    var li = jQuery('<li></li>');
+    li.text(`${message.from}: ${message.text}`);
+
+    jQuery('#messages').append(li);
+    
 });
 //Listening to a custom event is the same as implementing a built in event listener
+
+jQuery('#message-form').on('submit',function (e) {
+    e.preventDefault();
+    //This function prevents the default behavior of this submit button from happening
+    socket.emit('createMessage', {
+        from: 'User',
+        text: jQuery('[name=message]').val()
+        //We grab the value of our input field named 'message' in index.html
+    }, function () {
+
+    });
+});
+//This jQuery function allows you to select an element and do something with it
+//We tack on an event listener .on() to do something when the event happens

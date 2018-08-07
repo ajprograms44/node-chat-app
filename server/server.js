@@ -54,8 +54,7 @@ io.on('connection', (socket) => {
             from: message.from,
             text: message.text,
             createdAt: new Date().getTime
-
-            //io.emit emits to every single connection
+        //io.emit emits to every single connection
         });
 
         // socket.broadcast.emit('newMessage', {
